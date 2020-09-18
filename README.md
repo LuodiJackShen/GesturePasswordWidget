@@ -6,7 +6,7 @@ A widget for entering gesture passwords.
 ## Demo:
 1）A simple and common demo.
 
-Rendering:
+Rendering:<br>
 ![image](https://github.com/LuodiJackShen/GesturePasswordWidget/blob/master/resoures/simple_demo.gif)
 
 Code：
@@ -38,7 +38,7 @@ GesturePasswordWidget(
 
 2）A complex demo. A line has four dots and supports the effect of the selection by set [hitItem].
 
-Rendering:
+Rendering:<br>
 ![image](https://github.com/LuodiJackShen/GesturePasswordWidget/blob/master/resoures/complex_demo.gif)
 
 Code:

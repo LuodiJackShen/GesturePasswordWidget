@@ -1,7 +1,7 @@
 # GesturePasswordWidget
 [English](https://github.com/LuodiJackShen/GesturePasswordWidget/blob/master/README.md) | [简体中文](https://github.com/LuodiJackShen/GesturePasswordWidget/blob/master/README-CN.md)
 
-A widget for entering gesture passwords.
+A gesture-unlocking control for Flutter that supports a high degree of customization.
 
 ## Demo:
 1）A simple and common demo.

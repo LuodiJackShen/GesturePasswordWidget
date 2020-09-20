@@ -1,4 +1,4 @@
-# GesturePasswordWidget
+# GesturePasswordWidget [![GitHub stars](https://img.shields.io/github/stars/LuodiJackShen/GesturePasswordWidget)](https://github.com/LuodiJackShen/GesturePasswordWidget/stargazers) [![GitHub forks](https://img.shields.io/github/forks/LuodiJackShen/GesturePasswordWidget)](https://github.com/LuodiJackShen/GesturePasswordWidget/network)
 [English](https://github.com/LuodiJackShen/GesturePasswordWidget/blob/master/README.md) | [简体中文](https://github.com/LuodiJackShen/GesturePasswordWidget/blob/master/README-CN.md)
 
 A gesture-unlocking control for Flutter that supports a high degree of customization.

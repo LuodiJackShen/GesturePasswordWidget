@@ -1,6 +1,16 @@
 # GesturePasswordWidget
 
 一个用于Flutter并且支持高度自定义的手势解锁控件。
+## 使用
+
+```dart
+dependencies:
+  gesture_password_widget: ^1.0.1
+```
+
+```dart
+import 'package:gesture_password_widget/gesture_password_widget.dart';
+```
 
 ## 示例展示：  
 1）一个简单的例子：  

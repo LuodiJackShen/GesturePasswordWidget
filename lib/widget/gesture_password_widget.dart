@@ -395,6 +395,10 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
   }
 
   void handPanEnd(DragEndDetails details) async {
+    if (result.isEmpty) {
+      return;
+    }
+
     widget.onComplete?.call(result);
 
     linePoints.removeLast();

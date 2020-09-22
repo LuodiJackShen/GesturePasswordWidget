@@ -3,6 +3,17 @@
 
 A gesture-unlocking control for Flutter that supports a high degree of customization.
 
+## Use
+
+```dart
+dependencies:
+  gesture_password_widget: ^1.0.1
+```
+
+```dart
+import 'package:gesture_password_widget/gesture_password_widget.dart';
+```
+
 ## Demo:
 1）A simple and common demo.
 

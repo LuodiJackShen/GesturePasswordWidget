@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gesture_password_widget/model/point_item.dart';
@@ -113,7 +114,8 @@ typedef OnComplete = void Function(List<int> result);
 /// )
 /// ```
 ///
-class GesturePasswordWidget extends StatefulWidget {
+class GesturePasswordWidget extends StatefulWidget
+    with DiagnosticableTreeMixin {
   final double size;
   final double identifySize;
   final Widget normalItem;
@@ -155,6 +157,36 @@ class GesturePasswordWidget extends StatefulWidget {
   })  : assert(singleLineCount > 1, 'singLineCount must not be smaller than 1'),
         assert(identifySize > 0),
         assert(size > identifySize);
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DoubleProperty('size', size));
+    properties.add(DoubleProperty('identifySize', identifySize));
+    properties.add(DiagnosticsProperty<Widget>('normalItem', normalItem));
+    properties.add(DiagnosticsProperty<Widget>('selectedItem', selectedItem));
+    properties.add(DiagnosticsProperty<Widget>('errorItem', errorItem));
+    properties.add(DiagnosticsProperty<Widget>('hitItem', hitItem));
+    properties.add(IntProperty('singleLineCount', singleLineCount));
+    properties.add(ColorProperty('color', color));
+    properties.add(DiagnosticsProperty<OnHitPoint>('onHitPoint', onHitPoint));
+    properties.add(DiagnosticsProperty<OnComplete>('onComplete', onComplete));
+    properties.add(ColorProperty('lineColor', lineColor));
+    properties.add(ColorProperty('errorLineColor', errorLineColor));
+    properties.add(IterableProperty('answer', answer));
+    properties.add(DoubleProperty('lineWidth', lineWidth));
+    properties.add(FlagProperty(
+      'loose',
+      value: loose,
+      ifFalse: 'loose: false',
+      ifTrue: 'loose: true',
+      defaultValue: true,
+    ));
+    properties
+        .add(IntProperty('completeWaitMilliseconds', completeWaitMilliseconds));
+    properties.add(IntProperty('hitShowMilliseconds', hitShowMilliseconds));
+    properties.add(IntProperty('minLength', minLength));
+  }
 
   @override
   _GesturePasswordWidgetState createState() => _GesturePasswordWidgetState();

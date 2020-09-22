@@ -1,3 +1,3 @@
-## [1.0.0] - 2020/09/19
+## [1.0.2] - 2020/09/19
 
-* Implement basic functions and support custom styles.
+* add DiagnosticableTreeMixin.

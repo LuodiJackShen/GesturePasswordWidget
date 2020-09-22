@@ -7,7 +7,7 @@ A gesture-unlocking control for Flutter that supports a high degree of customiza
 
 ```dart
 dependencies:
-  gesture_password_widget: ^1.0.1
+  gesture_password_widget: latest-version
 ```
 
 ```dart

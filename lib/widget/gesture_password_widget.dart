@@ -291,6 +291,9 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
                 onPanDown: handlePanDown,
                 onPanUpdate: handlePanUpdate,
                 onPanEnd: handPanEnd,
+                onPanCancel: () {
+                  handPanEnd(null);
+                },
                 child: CustomPaint(
                   painter: LinePainter(
                     points: linePoints,

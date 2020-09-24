@@ -1,3 +1,3 @@
-## [1.0.2+1] - 2020/09/22
+## [1.0.3] - 2020/09/22
 
-* fix bug.
+* Compatible with some mobile phones, add ```onPanCancel```.

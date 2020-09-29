@@ -18,7 +18,7 @@ import 'package:gesture_password_widget/gesture_password_widget.dart';
 1）A simple and common demo.
 
 Rendering:<br>
-![image](https://github.com/LuodiJackShen/BookRepo/blob/master/gifs/simple_gesture_demo.gif)
+![image](https://github.com/LuodiJackShen/BookRepo/blob/master/gifs/simple_demo.gif)
 
 Code：
 ```dart

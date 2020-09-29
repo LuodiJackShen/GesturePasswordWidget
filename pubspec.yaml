@@ -1,7 +1,6 @@
 name: gesture_password_widget
-description: A widget for entering gesture passwords.
-version: 1.0.4
-author: LuodiJackShen<luodijack@gmail.com>
+description: A highly customizable gesture-based password-drawing widget that meets most of your daily needs.
+version: 1.0.5
 homepage: https://github.com/LuodiJackShen/GesturePasswordWidget
 
 environment:

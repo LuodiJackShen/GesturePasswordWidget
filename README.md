@@ -18,7 +18,7 @@ import 'package:gesture_password_widget/gesture_password_widget.dart';
 1）A simple and common demo.
 
 Rendering:<br>
-![image](https://github.com/LuodiJackShen/GesturePasswordWidget/blob/master/resoures/simple_demo.gif)
+![image](https://github.com/LuodiJackShen/BookRepo/blob/master/gifs/simple_demo.gif)
 
 Code：
 ```dart
@@ -64,7 +64,7 @@ GesturePasswordWidget(
 2）A complex demo. A line has four dots and supports the effect of the selection by set [hitItem].
 
 Rendering:<br>
-![image](https://github.com/LuodiJackShen/GesturePasswordWidget/blob/master/resoures/complex_demo.gif)
+![image](https://github.com/LuodiJackShen/BookRepo/blob/master/gifs/complex_demo.gif)
 
 Code:
 ```dart

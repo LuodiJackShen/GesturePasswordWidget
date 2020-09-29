@@ -15,7 +15,7 @@ import 'package:gesture_password_widget/gesture_password_widget.dart';
 ## 示例展示：  
 1）一个简单的例子：  
 效果图：  
-![image](https://github.com/LuodiJackShen/GesturePasswordWidget/blob/master/resoures/simple_demo.gif)
+![image](https://github.com/LuodiJackShen/BookRepo/blob/master/gifs/simple_demo.gif)
   
 代码：
 
@@ -61,7 +61,7 @@ GesturePasswordWidget(
 
 2）一个复杂的例子, 每行有4个点，通过设置hitItem支持了点选中后的效果。  
 效果图：  
-![image](https://github.com/LuodiJackShen/GesturePasswordWidget/blob/master/resoures/complex_demo.gif)  
+![image](https://github.com/LuodiJackShen/BookRepo/blob/master/gifs/complex_demo.gif)
   
 代码：
 ```dart

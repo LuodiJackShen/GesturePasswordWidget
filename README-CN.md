@@ -15,7 +15,7 @@ import 'package:gesture_password_widget/gesture_password_widget.dart';
 ## 示例展示：  
 1）一个简单的例子：  
 效果图：  
-![image](https://github.com/LuodiJackShen/BookRepo/blob/master/gifs/simple_demo.gif)
+![image](https://github.com/LuodiJackShen/BookRepo/blob/master/gifs/simple_gesture_demo.gif)
   
 代码：
 

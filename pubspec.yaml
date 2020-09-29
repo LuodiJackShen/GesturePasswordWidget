@@ -1,5 +1,5 @@
 name: gesture_password_widget
-description: A highly customizable gesture-based password-drawing widget that meets most of your daily needs.
+description: A gesture-unlocking widget for Flutter that supports for high customization.
 version: 1.0.5
 homepage: https://github.com/LuodiJackShen/GesturePasswordWidget
 

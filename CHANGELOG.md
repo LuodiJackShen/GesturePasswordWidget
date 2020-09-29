@@ -2,6 +2,7 @@
 
 * fix bugs.
 * support for an indicative icon at each point.
+* reduce the size of the package
 
 ## [1.0.3] - 2020/09/22
 

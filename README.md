@@ -1,7 +1,7 @@
 # GesturePasswordWidget [![GitHub stars](https://img.shields.io/github/stars/LuodiJackShen/GesturePasswordWidget)](https://github.com/LuodiJackShen/GesturePasswordWidget/stargazers) [![GitHub forks](https://img.shields.io/github/forks/LuodiJackShen/GesturePasswordWidget)](https://github.com/LuodiJackShen/GesturePasswordWidget/network)
 [English](https://github.com/LuodiJackShen/GesturePasswordWidget/blob/master/README.md) | [简体中文](https://github.com/LuodiJackShen/GesturePasswordWidget/blob/master/README-CN.md)
 
-A gesture-unlocking control for Flutter that supports a high degree of customization.
+A gesture-unlocking widget for Flutter that supports a high degree of customization.
 
 ## Use
 
@@ -18,7 +18,7 @@ import 'package:gesture_password_widget/gesture_password_widget.dart';
 1）A simple and common demo.
 
 Rendering:<br>
-![image](https://github.com/LuodiJackShen/BookRepo/blob/master/gifs/simple_demo.gif)
+![image](https://github.com/LuodiJackShen/BookRepo/blob/master/gifs/simple_gesture_demo.gif)
 
 Code：
 ```dart

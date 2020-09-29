@@ -35,6 +35,20 @@ GesturePasswordWidget(
         'images/selected.png',
         color: const Color(0xff0C6BFE),
       ),
+      arrowItem: Image.asset(
+        'images/arrow.png',
+        width: 20.0,
+        height: 20.0,
+        color: const Color(0xff0C6BFE),
+        fit: BoxFit.fill,
+      ),
+      errorArrowItem: Image.asset(
+        'images/arrow.png',
+        width: 20.0,
+        height: 20.0,
+        fit: BoxFit.fill,
+        color: const Color(0xffFB2E4E),
+      ),
       answer: [0, 1, 2, 4, 7],
       color: backgroundColor,
       onComplete: (data) {
@@ -42,7 +56,7 @@ GesturePasswordWidget(
           result = data.join(', ');
         });
       },
-    )
+    );
 ```
 
 2）一个复杂的例子, 每行有4个点，通过设置hitItem支持了点选中后的效果。  
@@ -110,6 +124,10 @@ GesturePasswordWidget(
 | selectedItem | 选中情况下展示的widget    |
 | errorItem    |  错误情况下展示的widget，只有设置了minLength或answer时才会生效. <br> 1）当minLength不为null时，如果选择的点的数量小于minLength，则展示errorItem，比如设置了minLength = 4，但是选择的点的结果集为 [0,1,3]，共选择了3个点，小于4；<br>2）当answer不为null时，如果选择的点的结果集和answer不相等，则展示errorItem，比如answer = [0,1,2,4,7]，但是选择的点的结果集为[0,1,2,5,8]，和answer不相等; <br>另外，errorItem的展示时长由completeWaitMilliseconds控制。    |
 | hitItem |  当这个点被选中时要展示的widget，其展示时长由hitShowMilliseconds控制，达到展示时长后继续展示selectedItem。    |
+| arrowItem | 正常情况下显示的箭头控件。<br> 跟随手势旋转时，x轴正方向为0度，所以如果你使用了箭头，确保箭头指向x轴正方向。 |
+| errorArrowItem | 错误情况下显示的箭头控件，如果设置了errorArrowItem,则必须设置arrowItem,否则errorArrowItem不会展示。<br> 跟随手势旋转时，x轴正方向为0度，所以如果你使用了箭头，确保箭头指向x轴正方向。 |
+| arrowXAlign | arrowItem和errorArrowItem在x轴上的偏移，原点在normalItem的中心。<br>当 -1 < arrowXAlign < 1 时，arrowItem和errorArrowItem在normalItem范围内进行绘制；<br>当arrowXAlign > 1 或者arrowXAlign < -1时，在normalItem范围外进行绘制； |
+| arrowYAlign | arrowItem和errorArrowItem在y轴上的偏移，原点在normalItem的中心。<br>当 -1 < arrowYAlign < 1 时，arrowItem和errorArrowItem在normalItem范围内进行绘制；<br>当arrowYAlign > 1 或者arrowYAlign < -1时，在normalItem范围外进行绘制； |
 | singleLineCount  | 单行个数，总个数等于 singleLineCount * singleLineCount.    |
 | color   | GesturePasswordWidget 的背景色，默认为Theme.of(context).scaffoldBackgroundColor    |
 | onHitPoint   |  当点被选中时的回调函数    |

@@ -37,6 +37,20 @@ GesturePasswordWidget(
         'images/selected.png',
         color: const Color(0xff0C6BFE),
       ),
+      arrowItem: Image.asset(
+        'images/arrow.png',
+        width: 20.0,
+        height: 20.0,
+        color: const Color(0xff0C6BFE),
+        fit: BoxFit.fill,
+      ),
+      errorArrowItem: Image.asset(
+        'images/arrow.png',
+        width: 20.0,
+        height: 20.0,
+        fit: BoxFit.fill,
+        color: const Color(0xffFB2E4E),
+      ),
       answer: [0, 1, 2, 4, 7],
       color: backgroundColor,
       onComplete: (data) {
@@ -44,7 +58,7 @@ GesturePasswordWidget(
           result = data.join(', ');
         });
       },
-    )
+    );
 ```
 
 2）A complex demo. A line has four dots and supports the effect of the selection by set [hitItem].
@@ -113,6 +127,10 @@ GesturePasswordWidget(
 | selectedItem | The widget to display in the selected case.    |
 | errorItem    |  The widget displayed in the error case will only work if minLength or answer is set. <br> (1) When minLength is not null, if the number of selected points is less than minLength, display errorItem, for example, minLength = 4 is set, but the result set of selected points is [0,1,3], a total of 3 points are selected, less than 4.<br>2) When answer is not null, the errorItem is displayed if the result set of the selected point and answer are not equal, e.g., answer = [0,1,2,4,7], but the result set of the selected point is [0,1,2,5,8], which is not equal to answer; <br>In addition, the display duration of the errorItem is controlled by completeWaitMilliseconds.    |
 | hitItem |  The widget to be displayed when this point is selected, its display duration is controlled by hitShowMilliseconds, continue to display selectedItem after reaching the display duration.    |
+| arrowItem | Normal display of the arrow widget. <br> When following the gesture rotation, the x-axis is 0 degrees positive, so if you use arrows, make sure they are pointing in the x-axis positive direction. |
+| errorArrowItem | Arrow controls displayed in error conditions, if errorArrowItem is set, then arrowItem must be set, otherwise errorArrowItem will not be displayed. <br> When following the gesture rotation, the x-axis is 0 degrees positive, so if you use arrows, make sure they are pointing in the x-axis positive direction. |
+| arrowXAlign | The offset of arrowItem and errorArrowItem on the x-axis, with the origin in the center of normalItem. <br>When -1 < arrowXAlign < 1, arrowItem and errorArrowItem are drawn within the normalItem. <br> When arrowXAlign > 1 or arrowXAlign < -1, arrowItem and errorArrowItem are drawn outside the normalItem range. |
+| arrowYAlign | The arrowItem and errorArrowItem are offset on the y-axis, with the origin at the center of normalItem. <br>When -1 < arrowYAlign < 1, arrowItem and errorArrowItem are drawn within the normalItem. <br>The arrowItem draws outside the normalItem range when arrowYAlign > 1 or arrowYAlign < -1. |
 | singleLineCount  | The total number of single lines is equal to singleLineCount * singleLineCount.    |
 | color   | The background color of GesturePasswordWidget,which defaults to Theme.of(context).scaffoldBackgroundColor.    |
 | onHitPoint   |  The callback function when a point is selected.    |

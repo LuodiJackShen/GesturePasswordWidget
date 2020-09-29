@@ -5,6 +5,7 @@ class PointItem {
   bool isSelected;
   bool isError;
   bool isFirstSelected;
+  double angle;
 
   PointItem({
     this.x,
@@ -13,6 +14,7 @@ class PointItem {
     this.isSelected = false,
     this.isError = false,
     this.isFirstSelected = false,
+    this.angle = double.infinity,
   });
 
   @override

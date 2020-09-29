@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
@@ -13,57 +14,12 @@ typedef OnHitPoint = void Function();
 /// [result] 已经选择的所有点的结果集
 typedef OnComplete = void Function(List<int> result);
 
-/// 手势密码绘制 widget
+/// 一个支持高度自定义、满足绝大部分日常需求的手势密码绘制widget
 ///
-/// [size] GesturePasswordWidget 的 width 和 height.
-///
-/// [identifySize] 用来判断点是否被选中的区域大小，值越大识别越精准.
-///
-/// [normalItem] 正常情况下展示的widget
-///
-/// [selectedItem] 选中情况下展示的widget
-///
-/// [errorItem] 错误情况下展示的widget，只有设置了[minLength]或[answer]时才会生效，
-/// 1）当[minLength]不为null时，如果选择的点的数量小于minLength，则展示[errorItem]，比如
-/// 设置了minLength = 4，但是选择的点的结果集为 [0,1,3]，共选择了3个点，小于4；
-/// 2）当[answer]不为null时，如果选择的点的结果集和[answer]不相等，则展示[errorItem]，比如
-/// answer = [0,1,2,4,7]，但是选择的点的结果集为[0,1,2,5,8]，和answer不想等;
-/// 另外，[errorItem]的展示时长由[completeWaitMilliseconds]控制。
-///
-/// [hitItem] 当这个点被选中时要展示的widget，其展示时长由[hitShowMilliseconds]控制，达到
-/// 展示时长后继续展示[selectedItem]。
-///
-/// [singleLineCount] 单行个数，总个数等于 singleLineCount * singleLineCount.
-///
-/// [color] GesturePasswordWidget 的背景色，默认为 [Theme.of].[scaffoldBackgroundColor]
-///
-/// [onHitPoint] 当点被选中时的回调函数
-///
-/// [onComplete] 手势滑动结束时的回调函数
-///
-/// [lineColor] 线的颜色
-///
-/// [errorLineColor] 错误场景下线的颜色，见[errorItem]
-///
-/// [lineWidth] 线的宽度
-///
-/// [answer] 正确的结果，demo: [0, 1, 2, 4, 7]
-///
-/// [loose] 是否采用宽松策略，默认为true。
-/// 考虑这种情况：第一个点选中了 index = 0 的点，第二个点选中了 index = 6的点，
-/// 此时index = 0,index = 3,index = 6这三个点在一条直线上，
-/// 如果loose为true，输出为[0,3,6],
-/// 如果loose为false，输出为[0,6].
-///
-/// [completeWaitMilliseconds] 最后选择的所有点及绘制的直线在屏幕上展示的时间，时间结束后，
-/// 清除所有点，恢复到初始状态，时间结束之前 GesturePasswordWidget 不再接受任何手势事件。
-///
-/// [hitShowMilliseconds] 见[hitItem]
-///
-/// [minLength] 如果设置了此值，则长度不够时显示errorItem和errorLine.
+/// [简体中文](https://github.com/LuodiJackShen/GesturePasswordWidget/blob/master/README-CN.md)
+/// [English](https://github.com/LuodiJackShen/GesturePasswordWidget/blob/master/README.md) <br>
 ///
 /// Demo:
-///
 /// ```dart
 /// GesturePasswordWidget(
 ///      lineColor: Colors.white,
@@ -104,6 +60,20 @@ typedef OnComplete = void Function(List<int> result);
 ///          borderRadius: BorderRadius.circular(50.0),
 ///        ),
 ///      ),
+///      arrowItem: Image.asset(
+///         'images/arrow.png',
+///         width: 20.0,
+///         height: 20.0,
+///         color: const Color(0xff0C6BFE),
+///         fit: BoxFit.fill,
+///      ),
+///      errorArrowItem: Image.asset(
+///         'images/arrow.png',
+///         width: 20.0,
+///         height: 20.0,
+///         fit: BoxFit.fill,
+///         color: const Color(0xffFB2E4E),
+///      ),
 ///      answer: [0, 1, 2, 4, 7],
 ///      color: Color(0xff252534),
 ///      onComplete: (data) {
@@ -116,23 +86,88 @@ typedef OnComplete = void Function(List<int> result);
 ///
 class GesturePasswordWidget extends StatefulWidget
     with DiagnosticableTreeMixin {
+  /// GesturePasswordWidget 的 width 和 height.
   final double size;
+
+  ///用来判断点是否被选中的区域大小，值越大识别越精准.
   final double identifySize;
+
+  ///正常情况下展示的widget
   final Widget normalItem;
+
+  ///选中情况下展示的widget
   final Widget selectedItem;
+
+  /// 错误情况下展示的widget，只有设置了[minLength]或[answer]时才会生效，
+  /// 1）当[minLength]不为null时，如果选择的点的数量小于minLength，则展示[errorItem]，
+  /// 比如设置了 minLength = 4，但是选择的点的结果集为 [0,1,3]，共选择了3个点，小于4；
+  /// 2）当[answer]不为null时，如果选择的点的结果集和[answer]不相等，则展示[errorItem]，
+  /// 比如 answer = [0,1,2,4,7]，但是选择的点的结果集为[0,1,2,5,8]，和answer不相等;
+  /// 另外，[errorItem]的展示时长由[completeWaitMilliseconds]控制。
   final Widget errorItem;
+
+  /// 当这个点被选中时要展示的widget，其展示时长由[hitShowMilliseconds]控制，达到展示时长
+  /// 后继续展示[selectedItem]。
   final Widget hitItem;
+
+  ///正常情况下显示的箭头控件。
+  ///跟随手势旋转时，x轴正方向为0度，所以如果你使用了箭头，确保箭头指向x轴正方向。
+  final Widget arrowItem;
+
+  ///错误情况下显示的箭头控件，如果设置了[errorArrowItem],则必须设置[arrowItem],
+  ///否则[errorArrowItem]不会展示。
+  ///跟随手势旋转时，x轴正方向为0度，所以如果你使用了箭头，确保箭头指向x轴正方向。
+  final Widget errorArrowItem;
+
+  ///[arrowItem]和[errorArrowItem]在x轴上的偏移，原点在[normalItem]的中心。
+  ///当 -1 < [arrowXAlign] < 1 时，[arrowItem]和[errorArrowItem]在[normalItem]范围内进行绘制；
+  ///当[arrowXAlign] > 1 或者[arrowXAlign] < -1时，在[normalItem]范围外进行绘制；
+  final double arrowXAlign;
+
+  ///[arrowItem]和[errorArrowItem]在y轴上的偏移，原点在[normalItem]的中心。
+  ///当 -1 < [arrowYAlign] < 1 时，[arrowItem]和[errorArrowItem]在[normalItem]范围内进行绘制；
+  ///当[arrowYAlign] > 1 或者[arrowYAlign] < -1时，在[normalItem]范围外进行绘制；
+  final double arrowYAlign;
+
+  ///单行个数，总个数等于 singleLineCount * singleLineCount.
   final int singleLineCount;
+
+  ///GesturePasswordWidget的背景色，默认为 [Theme.of].[scaffoldBackgroundColor]
   final Color color;
+
+  ///当点被选中时的回调函数
   final OnHitPoint onHitPoint;
+
+  ///手势滑动结束时的回调函数
   final OnComplete onComplete;
+
+  ///线的颜色
   final Color lineColor;
+
+  ///错误场景下线的颜色，见[errorItem]
   final Color errorLineColor;
+
+  ///线的宽度
   final double lineWidth;
+
+  /// 是否采用宽松策略，默认为true。
+  /// 考虑这种情况：第一个点选中了 index = 0 的点，第二个点选中了 index = 6的点，
+  /// 此时index = 0,index = 3,index = 6这三个点在一条直线上，
+  /// 如果loose为true，输出为[0,3,6],
+  /// 如果loose为false，输出为[0,6].
   final bool loose;
+
+  ///正确的结果，demo: [0, 1, 2, 4, 7]
   final List<int> answer;
+
+  ///最后选择的所有点及绘制的直线在屏幕上展示的时间，时间结束后，清除所有点，恢复到初始状态，
+  ///时间结束之前 GesturePasswordWidget 不再接受任何手势事件。
   final int completeWaitMilliseconds;
+
+  ///见[hitItem]
   final int hitShowMilliseconds;
+
+  ///如果设置了此值，则长度不够时显示[errorItem]和[errorLineColor].
   final int minLength;
 
   GesturePasswordWidget({
@@ -142,6 +177,10 @@ class GesturePasswordWidget extends StatefulWidget
     this.selectedItem,
     this.errorItem,
     this.hitItem,
+    this.arrowItem,
+    this.errorArrowItem,
+    this.arrowXAlign = 0.6,
+    this.arrowYAlign = 0.0,
     this.singleLineCount = 3,
     this.color,
     this.onHitPoint,
@@ -156,7 +195,9 @@ class GesturePasswordWidget extends StatefulWidget
     this.minLength,
   })  : assert(singleLineCount > 1, 'singLineCount must not be smaller than 1'),
         assert(identifySize > 0),
-        assert(size > identifySize);
+        assert(size > identifySize),
+        assert(!(errorArrowItem != null && arrowItem == null),
+            'when arrowItem == null, errorArrowItem will not be shown.');
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -167,6 +208,12 @@ class GesturePasswordWidget extends StatefulWidget
     properties.add(DiagnosticsProperty<Widget>('selectedItem', selectedItem));
     properties.add(DiagnosticsProperty<Widget>('errorItem', errorItem));
     properties.add(DiagnosticsProperty<Widget>('hitItem', hitItem));
+    properties.add(DiagnosticsProperty<Widget>('arrowItem', arrowItem));
+    properties.add(
+      DiagnosticsProperty<Widget>('errorArrowItem', errorArrowItem),
+    );
+    properties.add(DoubleProperty('arrowXAlign', arrowXAlign));
+    properties.add(DoubleProperty('arrowYAlign', arrowYAlign));
     properties.add(IntProperty('singleLineCount', singleLineCount));
     properties.add(ColorProperty('color', color));
     properties.add(DiagnosticsProperty<OnHitPoint>('onHitPoint', onHitPoint));
@@ -182,8 +229,9 @@ class GesturePasswordWidget extends StatefulWidget
       ifTrue: 'loose: true',
       defaultValue: true,
     ));
-    properties
-        .add(IntProperty('completeWaitMilliseconds', completeWaitMilliseconds));
+    properties.add(
+      IntProperty('completeWaitMilliseconds', completeWaitMilliseconds),
+    );
     properties.add(IntProperty('hitShowMilliseconds', hitShowMilliseconds));
     properties.add(IntProperty('minLength', minLength));
   }
@@ -340,6 +388,11 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
         child = selectedItem;
       }
 
+      Widget arrowItem = widget.arrowItem;
+      if (p.isError && widget.errorArrowItem != null) {
+        arrowItem = widget.errorArrowItem;
+      }
+
       return Align(
         alignment: Alignment(x, y),
         child: Container(
@@ -347,7 +400,23 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
           width: widget.identifySize,
           height: widget.identifySize,
           alignment: Alignment.center,
-          child: child,
+          child: widget.arrowItem == null || p.angle == double.infinity
+              ? child
+              : Transform.rotate(
+                  angle: p.angle,
+                  child: Stack(
+                    children: [
+                      child,
+                      Align(
+                        alignment: Alignment(
+                          widget.arrowXAlign,
+                          widget.arrowYAlign,
+                        ),
+                        child: arrowItem,
+                      ),
+                    ],
+                  ),
+                ),
         ),
       );
     }).toList();
@@ -371,23 +440,61 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
   void handlePanUpdate(DragUpdateDetails details) {
     Point<double> curPoint =
         Point(details.localPosition.dx, details.localPosition.dy);
-    final point = calculateHintPoint(curPoint);
-    if (point != null) {
-      if (!linePoints.contains(Point(point.x, point.y))) {
-        final drawPoint = Point(point.x, point.y);
+    final hitPoint = calculateHintPoint(curPoint);
+    if (hitPoint != null) {
+      if (!linePoints.contains(Point(hitPoint.x, hitPoint.y))) {
+        final drawPoint = Point(hitPoint.x, hitPoint.y);
         //宽松策略下，若三点共线则自动将中间的点设置为选中状态。
         if (widget.loose && linePoints.isNotEmpty) {
-          handleLooseCase(points[result.last], point);
+          handleLooseCase(points[result.last], hitPoint);
         }
-        addPointToResult(point.index);
+
+        //处理箭头的角度展示
+        if (widget.arrowItem != null) {
+          for (int i = 0; i < result.length - 1; i++) {
+            final p1 = math.Point(
+              points[result[i]].x,
+              points[result[i]].y,
+            );
+            final p2 = math.Point(
+              points[result[i + 1]].x,
+              points[result[i + 1]].y,
+            );
+
+            points[result[i]].angle = calculateAngle(p1, p2);
+          }
+        }
+
+        if (result.isNotEmpty) {
+          int length = result.length;
+          final p1 = Point(
+            points[result[length - 1]].x,
+            points[result[length - 1]].y,
+          );
+
+          double angle = calculateAngle(p1, math.Point(hitPoint.x, hitPoint.y));
+          points[result[length - 1]].angle = angle;
+        }
+        addPointToResult(hitPoint.index);
         setState(() {
           linePoints.remove(lastPoint);
-          point.isSelected = true;
+          hitPoint.isSelected = true;
           linePoints.add(drawPoint);
         });
       }
     } else {
       if (linePoints.isNotEmpty) {
+        if (widget.arrowItem != null) {
+          int length = result.length;
+          final p1 = Point(
+            points[result[length - 1]].x,
+            points[result[length - 1]].y,
+          );
+
+          double angle = calculateAngle(p1, curPoint);
+          points[result[length - 1]].angle = angle;
+        }
+
         setState(() {
           linePoints.remove(lastPoint);
           linePoints.add(curPoint);
@@ -408,13 +515,14 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
 
     if ((widget.answer != null && widget.answer.join() != result.join()) ||
         (widget.minLength != null && widget.minLength > result.length)) {
-      setState(() {
-        lineColor = widget.errorLineColor;
-        for (int i = 0; i < result.length; i++) {
-          points[result[i]].isError = true;
-        }
-      });
+      lineColor = widget.errorLineColor;
+      for (int i = 0; i < result.length; i++) {
+        points[result[i]].isError = true;
+      }
     }
+
+    //清除最后一个点的角度
+    points[result.last].angle = double.infinity;
 
     setState(() {
       ignoring = true;
@@ -429,6 +537,7 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
       points.forEach((p) {
         p.isSelected = false;
         p.isError = false;
+        p.angle = double.infinity;
       });
       linePoints.clear();
       result.clear();
@@ -465,9 +574,10 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
     }
   }
 
-  //根据海伦公式计算三角形面积，面积为0时视为三点共线。
-  //如果这个点还在共线的中间，则将其设置为选中状态，并将其添加到result中。
+  //根据海伦公式计算三角形面积，面积为0时视为三点共线。如果这个点还在共线的中间，
+  //则将其设置为选中状态，并将其添加到result中。
   void handleLooseCase(PointItem pre, PointItem next) {
+    List<int> midItems = [];
     points.forEach((item) {
       if (item != pre && item != next && item.isSelected == false) {
         final itemDrawPoint = Point<double>(item.x, item.y);
@@ -487,9 +597,24 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
 
         if (area - 0.5 <= 0 && itemDrawPoint.distanceTo(mid) < halfDistance) {
           item.isSelected = true;
-          addPointToResult(item.index);
+          midItems.add(item.index);
         }
       }
     });
+
+    if (next.index > pre.index) {
+      midItems.sort((a, b) => a - b);
+    } else {
+      midItems.sort((a, b) => b - a);
+    }
+
+    midItems.forEach((index) {
+      addPointToResult(index);
+    });
+  }
+
+  //计算两点之间连线和 x 轴的夹角,返回弧度
+  double calculateAngle(Point p1, Point p2) {
+    return math.atan2((p2.y - p1.y), (p2.x - p1.x)); //弧度
   }
 }

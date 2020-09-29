@@ -83,6 +83,20 @@ class _GesturePasswordWidgetDemoState extends State<GesturePasswordWidgetDemo> {
         'images/selected.png',
         color: const Color(0xff0C6BFE),
       ),
+      arrowItem: Image.asset(
+        'images/arrow.png',
+        width: 20.0,
+        height: 20.0,
+        color: const Color(0xff0C6BFE),
+        fit: BoxFit.fill,
+      ),
+      errorArrowItem: Image.asset(
+        'images/arrow.png',
+        width: 20.0,
+        height: 20.0,
+        fit: BoxFit.fill,
+        color: const Color(0xffFB2E4E),
+      ),
       answer: [0, 1, 2, 4, 7],
       color: backgroundColor,
       onComplete: (data) {

@@ -84,8 +84,7 @@ typedef OnComplete = void Function(List<int> result);
 /// )
 /// ```
 ///
-class GesturePasswordWidget extends StatefulWidget
-    with DiagnosticableTreeMixin {
+class GesturePasswordWidget extends StatefulWidget with DiagnosticableTreeMixin {
   /// GesturePasswordWidget 的 width 和 height.
   final double size;
 
@@ -362,8 +361,7 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
   void calculatePointPosition() {
     double initX = widget.identifySize * 0.5;
     double initY = widget.identifySize * 0.5;
-    double gap =
-        (widget.size - widget.identifySize) / (widget.singleLineCount - 1);
+    double gap = (widget.size - widget.identifySize) / (widget.singleLineCount - 1);
 
     for (int i = 0; i < totalCount; i++) {
       double centerX = initX + i % widget.singleLineCount * gap;
@@ -423,8 +421,7 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
   }
 
   void handlePanDown(DragDownDetails details) {
-    Point<double> curPoint =
-        Point(details.localPosition.dx, details.localPosition.dy);
+    Point<double> curPoint = Point(details.localPosition.dx, details.localPosition.dy);
     final point = calculateHintPoint(curPoint);
     if (point != null) {
       if (!linePoints.contains(Point(point.x, point.y))) {
@@ -438,8 +435,7 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
   }
 
   void handlePanUpdate(DragUpdateDetails details) {
-    Point<double> curPoint =
-        Point(details.localPosition.dx, details.localPosition.dy);
+    Point<double> curPoint = Point(details.localPosition.dx, details.localPosition.dy);
     final hitPoint = calculateHintPoint(curPoint);
     if (hitPoint != null) {
       if (!linePoints.contains(Point(hitPoint.x, hitPoint.y))) {
@@ -511,6 +507,10 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
 
     widget.onComplete?.call(result);
 
+    if (!mounted) {
+      return;
+    }
+
     linePoints.removeLast();
 
     if ((widget.answer != null && widget.answer.join() != result.join()) ||
@@ -524,6 +524,10 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
     //清除最后一个点的角度
     points[result.last].angle = double.infinity;
 
+    if (!mounted) {
+      return;
+    }
+
     setState(() {
       ignoring = true;
     });
@@ -533,6 +537,9 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
     ignoring = false;
     lineColor = widget.lineColor;
 
+    if (!mounted) {
+      return;
+    }
     setState(() {
       points.forEach((p) {
         p.isSelected = false;

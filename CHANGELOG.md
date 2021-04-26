@@ -1,3 +1,8 @@
+## [2.0.0] - 2021/01/28
+
+* Migrate to null safety.
+* fix bugs.
+
 ## [1.0.6] - 2021/01/28
 
 * fix bugs.

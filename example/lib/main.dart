@@ -18,12 +18,11 @@ const backgroundColor = Color(0xff252534);
 
 class GesturePasswordWidgetDemo extends StatefulWidget {
   @override
-  _GesturePasswordWidgetDemoState createState() =>
-      _GesturePasswordWidgetDemoState();
+  _GesturePasswordWidgetDemoState createState() => _GesturePasswordWidgetDemoState();
 }
 
 class _GesturePasswordWidgetDemoState extends State<GesturePasswordWidgetDemo> {
-  String result;
+  String? result;
 
   @override
   Widget build(BuildContext context) {

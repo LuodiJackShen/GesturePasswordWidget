@@ -3,9 +3,9 @@ import 'dart:math';
 import 'package:flutter/widgets.dart';
 
 class LinePainter extends CustomPainter {
-  final List<Point> points;
-  final Color lineColor;
-  final double lineWidth;
+  final List<Point>? points;
+  final Color? lineColor;
+  final double? lineWidth;
 
   LinePainter({
     this.points,
@@ -15,18 +15,18 @@ class LinePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    if (points != null && points.length > 1) {
+    if (points != null && points!.length > 1) {
       Paint paint = Paint();
-      paint.strokeWidth = lineWidth;
-      paint.color = lineColor;
+      paint.strokeWidth = lineWidth!;
+      paint.color = lineColor!;
       paint.isAntiAlias = true;
       paint.style = PaintingStyle.fill;
       paint.strokeCap = StrokeCap.round;
 
-      for (int i = 0; i < points.length - 1; i++) {
+      for (int i = 0; i < points!.length - 1; i++) {
         canvas.drawLine(
-          Offset(points[i].x, points[i].y),
-          Offset(points[i + 1].x, points[i + 1].y),
+          Offset(points![i].x as double, points![i].y as double),
+          Offset(points![i + 1].x as double, points![i + 1].y as double),
           paint,
         );
       }

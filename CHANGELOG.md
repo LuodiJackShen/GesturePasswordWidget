@@ -1,3 +1,6 @@
+## [2.0.1] - 2022/12/02
+* fix #6.
+
 ## [2.0.0] - 2021/04/26
 * Migrate to null safety.
 * fix bugs.

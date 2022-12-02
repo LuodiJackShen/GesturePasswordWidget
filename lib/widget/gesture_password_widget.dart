@@ -402,6 +402,7 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
               : Transform.rotate(
                   angle: p.angle,
                   child: Stack(
+                    alignment: AlignmentDirectional.center,
                     children: [
                       child!,
                       Align(

@@ -195,8 +195,7 @@ class GesturePasswordWidget extends StatefulWidget with DiagnosticableTreeMixin 
   })  : assert(singleLineCount > 1, 'singLineCount must not be smaller than 1'),
         assert(identifySize > 0),
         assert(size > identifySize),
-        assert(!(errorArrowItem != null && arrowItem == null),
-            'when arrowItem == null, errorArrowItem will not be shown.');
+        assert(!(errorArrowItem != null && arrowItem == null), 'when arrowItem == null, errorArrowItem will not be shown.');
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {

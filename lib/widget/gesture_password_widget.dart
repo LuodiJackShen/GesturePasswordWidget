@@ -14,6 +14,8 @@ typedef OnHitPoint = void Function();
 /// [result] 已经选择的所有点的结果集
 typedef OnComplete = void Function(List<int?> result);
 
+typedef OnCancel = void Function();
+
 /// 一个支持高度自定义、满足绝大部分日常需求的手势密码绘制widget
 ///
 /// [简体中文](https://github.com/LuodiJackShen/GesturePasswordWidget/blob/master/README-CN.md)
@@ -169,33 +171,14 @@ class GesturePasswordWidget extends StatefulWidget with DiagnosticableTreeMixin 
   ///如果设置了此值，则长度不够时显示[errorItem]和[errorLineColor].
   final int? minLength;
 
-  GesturePasswordWidget({
-    this.size = 300.0,
-    this.identifySize = 50.0,
-    this.normalItem,
-    this.selectedItem,
-    this.errorItem,
-    this.hitItem,
-    this.arrowItem,
-    this.errorArrowItem,
-    this.arrowXAlign = 0.6,
-    this.arrowYAlign = 0.0,
-    this.singleLineCount = 3,
-    this.color,
-    this.onHitPoint,
-    this.onComplete,
-    this.lineColor = Colors.green,
-    this.errorLineColor = Colors.redAccent,
-    this.lineWidth = 2.0,
-    this.answer,
-    this.loose = true,
-    this.completeWaitMilliseconds = 300,
-    this.hitShowMilliseconds = 40,
-    this.minLength,
-  })  : assert(singleLineCount > 1, 'singLineCount must not be smaller than 1'),
-        assert(identifySize > 0),
-        assert(size > identifySize),
-        assert(!(errorArrowItem != null && arrowItem == null), 'when arrowItem == null, errorArrowItem will not be shown.');
+  ///Used to cancel the drawn pattern
+  final Widget? cancelButton;
+
+  ///The size of the area used to judge whether the cancel point is selected, the larger the value, the more accurate the recognition.
+  final double cancelIdentifySize;
+
+  ///Callback function when the cancelled
+  final OnCancel? onCancel;
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -234,6 +217,37 @@ class GesturePasswordWidget extends StatefulWidget with DiagnosticableTreeMixin 
     properties.add(IntProperty('minLength', minLength));
   }
 
+  GesturePasswordWidget({
+    this.size = 300.0,
+    this.identifySize = 50.0,
+    this.normalItem,
+    this.selectedItem,
+    this.errorItem,
+    this.hitItem,
+    this.arrowItem,
+    this.errorArrowItem,
+    this.arrowXAlign = 0.6,
+    this.arrowYAlign = 0.0,
+    this.singleLineCount = 3,
+    this.color,
+    this.onHitPoint,
+    this.onComplete,
+    this.onCancel,
+    this.lineColor = Colors.green,
+    this.errorLineColor = Colors.redAccent,
+    this.lineWidth = 2.0,
+    this.answer,
+    this.loose = true,
+    this.completeWaitMilliseconds = 300,
+    this.hitShowMilliseconds = 40,
+    this.minLength,
+    this.cancelIdentifySize = 50.0,
+    this.cancelButton,
+  })  : assert(singleLineCount > 1, 'singLineCount must not be smaller than 1'),
+        assert(identifySize > 0),
+        assert(size > identifySize),
+        assert(!(errorArrowItem != null && arrowItem == null), 'when arrowItem == null, errorArrowItem will not be shown.');
+
   @override
   _GesturePasswordWidgetState createState() => _GesturePasswordWidgetState();
 }
@@ -254,6 +268,7 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
   final linePoints = <Point<double>>[];
   final result = <int?>[];
   final double defaultSize = 10.0;
+  late PointItem cancelPoint;
 
   @override
   void initState() {
@@ -287,6 +302,8 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
     normalItem = widget.normalItem ?? defaultNormalItem;
     selectedItem = widget.selectedItem ?? defaultSelectedItem;
     errorItem = widget.errorItem ?? defaultErrorItem;
+
+    cancelPoint = PointItem(x: widget.size * 0.5, y: widget.size + 50, isSelected: false);
 
     totalCount = widget.singleLineCount * widget.singleLineCount;
     origin = Point<double>(widget.size * 0.5, widget.size * 0.5);
@@ -326,32 +343,45 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
   Widget build(BuildContext context) {
     return IgnorePointer(
       ignoring: ignoring,
-      child: Container(
-        color: widget.color ?? Theme.of(context).scaffoldBackgroundColor,
-        width: widget.size,
-        height: widget.size,
-        child: Stack(
-          children: createPointsWidget()
-            ..add(
-              GestureDetector(
-                onPanDown: handlePanDown,
-                onPanUpdate: handlePanUpdate,
-                onPanEnd: handPanEnd,
-                onPanCancel: () {
-                  handPanEnd(null);
-                },
-                child: CustomPaint(
-                  painter: LinePainter(
-                    points: linePoints,
-                    lineColor: lineColor,
-                    lineWidth: widget.lineWidth,
-                  ),
-                  willChange: true,
-                  size: Size(widget.size, widget.size),
+      child: widget.cancelButton != null
+          ? Column(
+              children: [
+                buildGesturePasswordWidget(),
+                SizedBox(height: 25),
+                widget.cancelButton!,
+              ],
+            )
+          : buildGesturePasswordWidget(),
+    );
+  }
+
+  Widget buildGesturePasswordWidget() {
+    return Container(
+      color: widget.color ?? Theme.of(context).scaffoldBackgroundColor,
+      width: widget.size,
+      height: widget.size,
+      child: Stack(
+        children: createPointsWidget()
+          ..add(
+            GestureDetector(
+              onPanDown: handlePanDown,
+              onPanUpdate: handlePanUpdate,
+              onPanEnd: handPanEnd,
+              onPanCancel: () {
+                print("onPanCancel ");
+                handPanEnd(null);
+              },
+              child: CustomPaint(
+                painter: LinePainter(
+                  points: linePoints,
+                  lineColor: lineColor,
+                  lineWidth: widget.lineWidth,
                 ),
+                willChange: true,
+                size: Size(widget.size, widget.size),
               ),
             ),
-        ),
+          ),
       ),
     );
   }
@@ -434,6 +464,13 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
     }
   }
 
+  void checkCancelPoint(Point<double> curPoint) {
+    final point = calculateCancelHintPoint(curPoint);
+    if (point != null) {
+      cancelPoint.isSelected = true;
+    }
+  }
+
   void handlePanUpdate(DragUpdateDetails details) {
     Point<double> curPoint = Point(details.localPosition.dx, details.localPosition.dy);
     final hitPoint = calculateHintPoint(curPoint);
@@ -498,6 +535,7 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
         lastPoint = curPoint;
       }
     }
+    checkCancelPoint(curPoint);
   }
 
   void handPanEnd(DragEndDetails? details) async {
@@ -505,41 +543,45 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
       return;
     }
 
-    widget.onComplete?.call(result);
+    if (cancelPoint.isSelected) {
+      widget.onCancel?.call();
+    } else {
+      widget.onComplete?.call(result);
+      if (!mounted) {
+        return;
+      }
 
-    if (!mounted) {
-      return;
-    }
+      linePoints.removeLast();
 
-    linePoints.removeLast();
+      if ((widget.answer != null && widget.answer!.join() != result.join()) ||
+          (widget.minLength != null && widget.minLength! > result.length)) {
+        lineColor = widget.errorLineColor;
+        for (int i = 0; i < result.length; i++) {
+          points[result[i]!].isError = true;
+        }
+      }
 
-    if ((widget.answer != null && widget.answer!.join() != result.join()) ||
-        (widget.minLength != null && widget.minLength! > result.length)) {
-      lineColor = widget.errorLineColor;
-      for (int i = 0; i < result.length; i++) {
-        points[result[i]!].isError = true;
+      //清除最后一个点的角度
+      points[result.last!].angle = double.infinity;
+
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        ignoring = true;
+      });
+      await Future.delayed(Duration(
+        milliseconds: widget.completeWaitMilliseconds,
+      ));
+      ignoring = false;
+      lineColor = widget.lineColor;
+
+      if (!mounted) {
+        return;
       }
     }
 
-    //清除最后一个点的角度
-    points[result.last!].angle = double.infinity;
-
-    if (!mounted) {
-      return;
-    }
-
-    setState(() {
-      ignoring = true;
-    });
-    await Future.delayed(Duration(
-      milliseconds: widget.completeWaitMilliseconds,
-    ));
-    ignoring = false;
-    lineColor = widget.lineColor;
-
-    if (!mounted) {
-      return;
-    }
     setState(() {
       points.forEach((p) {
         p.isSelected = false;
@@ -548,6 +590,7 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
       });
       linePoints.clear();
       result.clear();
+      cancelPoint.isSelected = false;
     });
   }
 
@@ -561,6 +604,14 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
         }
         return points[i];
       }
+    }
+    return null;
+  }
+
+  PointItem? calculateCancelHintPoint(Point<double> curPoint) {
+    final p = Point(cancelPoint.x, cancelPoint.y);
+    if (p.distanceTo(curPoint) + 0.5 < widget.cancelIdentifySize) {
+      return cancelPoint;
     }
     return null;
   }

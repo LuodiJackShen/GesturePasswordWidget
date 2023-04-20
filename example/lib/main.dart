@@ -1,3 +1,4 @@
+import 'package:example/cancel_button.dart';
 import 'package:flutter/material.dart';
 import 'package:gesture_password_widget/gesture_password_widget.dart';
 
@@ -102,6 +103,17 @@ class _GesturePasswordWidgetDemoState extends State<GesturePasswordWidgetDemo> {
         setState(() {
           result = data.join(', ');
         });
+        debugPrint("result: $result");
+      },
+      cancelButton: CancelButton(
+        diameter: 110,
+        child: Text("Cancel"),
+      ),
+      onCancel: () {
+        setState(() {
+          result = "Cancelled";
+        });
+        debugPrint("Drawn Pattern Cancelled");
       },
     );
   }

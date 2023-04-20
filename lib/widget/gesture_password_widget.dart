@@ -180,6 +180,8 @@ class GesturePasswordWidget extends StatefulWidget with DiagnosticableTreeMixin 
   ///Callback function when the cancelled
   final OnCancel? onCancel;
 
+  final double? cancelButtonSpace;
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -243,6 +245,7 @@ class GesturePasswordWidget extends StatefulWidget with DiagnosticableTreeMixin 
     this.minLength,
     this.cancelIdentifySize = 50.0,
     this.cancelButton,
+    this.cancelButtonSpace = 30,
   })  : assert(singleLineCount > 1, 'singLineCount must not be smaller than 1'),
         assert(identifySize > 0),
         assert(size > identifySize),
@@ -345,9 +348,10 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
       ignoring: ignoring,
       child: widget.cancelButton != null
           ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 buildGesturePasswordWidget(),
-                SizedBox(height: 25),
+                SizedBox(height: widget.cancelButtonSpace),
                 widget.cancelButton!,
               ],
             )
@@ -357,6 +361,7 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
 
   Widget buildGesturePasswordWidget() {
     return Container(
+      alignment: Alignment.center,
       color: widget.color ?? Theme.of(context).scaffoldBackgroundColor,
       width: widget.size,
       height: widget.size,

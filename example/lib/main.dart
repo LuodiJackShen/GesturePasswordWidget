@@ -106,7 +106,7 @@ class _GesturePasswordWidgetDemoState extends State<GesturePasswordWidgetDemo> {
         debugPrint("result: $result");
       },
       cancelButton: CancelButton(
-        diameter: 110,
+        diameter: 100,
         child: Text("Cancel"),
       ),
       onCancel: () {

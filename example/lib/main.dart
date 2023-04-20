@@ -1,4 +1,3 @@
-import 'package:example/cancel_button.dart';
 import 'package:flutter/material.dart';
 import 'package:gesture_password_widget/gesture_password_widget.dart';
 
@@ -105,9 +104,10 @@ class _GesturePasswordWidgetDemoState extends State<GesturePasswordWidgetDemo> {
         });
         debugPrint("result: $result");
       },
-      cancelButton: CancelButton(
-        diameter: 100,
-        child: Text("Cancel"),
+      cancelButton: Container(
+        decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.all(Radius.circular(100))),
+        padding: EdgeInsets.all(20),
+        child: Text("Cancel", style: TextStyle(color: Colors.white)),
       ),
       onCancel: () {
         setState(() {

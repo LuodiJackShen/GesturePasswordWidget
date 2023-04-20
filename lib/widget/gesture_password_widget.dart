@@ -180,6 +180,7 @@ class GesturePasswordWidget extends StatefulWidget with DiagnosticableTreeMixin 
   ///Callback function when the cancelled
   final OnCancel? onCancel;
 
+  /// Space value between PasswordWidget and CancelButton
   final double? cancelButtonSpace;
 
   @override
@@ -272,6 +273,7 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
   final result = <int?>[];
   final double defaultSize = 10.0;
   late PointItem cancelPoint;
+  bool cancelButtonVisibility = false;
 
   @override
   void initState() {
@@ -352,7 +354,7 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
               children: [
                 buildGesturePasswordWidget(),
                 SizedBox(height: widget.cancelButtonSpace),
-                widget.cancelButton!,
+                Visibility(child: widget.cancelButton!, visible: cancelButtonVisibility),
               ],
             )
           : buildGesturePasswordWidget(),
@@ -464,6 +466,7 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
         setState(() {
           point.isSelected = true;
           linePoints.add(Point(point.x, point.y));
+          cancelButtonVisibility = true;
         });
       }
     }
@@ -518,6 +521,7 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
           linePoints.remove(lastPoint);
           hitPoint.isSelected = true;
           linePoints.add(drawPoint);
+          cancelButtonVisibility = true;
         });
       }
     } else {
@@ -596,6 +600,7 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
       linePoints.clear();
       result.clear();
       cancelPoint.isSelected = false;
+      cancelButtonVisibility = false;
     });
   }
 

@@ -183,6 +183,9 @@ class GesturePasswordWidget extends StatefulWidget with DiagnosticableTreeMixin 
   /// Space value between PasswordWidget and CancelButton
   final double? cancelButtonSpace;
 
+  /// CancelButton height area
+  final double? cancelButtonHeight;
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -247,6 +250,7 @@ class GesturePasswordWidget extends StatefulWidget with DiagnosticableTreeMixin 
     this.cancelIdentifySize = 50.0,
     this.cancelButton,
     this.cancelButtonSpace = 30,
+    this.cancelButtonHeight = 70,
   })  : assert(singleLineCount > 1, 'singLineCount must not be smaller than 1'),
         assert(identifySize > 0),
         assert(size > identifySize),
@@ -354,7 +358,12 @@ class _GesturePasswordWidgetState extends State<GesturePasswordWidget> {
               children: [
                 buildGesturePasswordWidget(),
                 SizedBox(height: widget.cancelButtonSpace),
-                Visibility(child: widget.cancelButton!, visible: cancelButtonVisibility),
+                Container(
+                    height: widget.cancelButtonHeight,
+                    child: Visibility(
+                      child: widget.cancelButton!,
+                      visible: cancelButtonVisibility,
+                    )),
               ],
             )
           : buildGesturePasswordWidget(),

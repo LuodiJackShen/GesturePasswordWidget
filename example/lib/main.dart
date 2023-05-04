@@ -102,6 +102,18 @@ class _GesturePasswordWidgetDemoState extends State<GesturePasswordWidgetDemo> {
         setState(() {
           result = data.join(', ');
         });
+        debugPrint("result: $result");
+      },
+      cancelButton: Container(
+        decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.all(Radius.circular(100))),
+        padding: EdgeInsets.all(20),
+        child: Text("Cancel", style: TextStyle(color: Colors.white)),
+      ),
+      onCancel: () {
+        setState(() {
+          result = "Cancelled";
+        });
+        debugPrint("Drawn Pattern Cancelled");
       },
     );
   }
